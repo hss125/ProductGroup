@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Menu = 4;
+}
+@using ProductGroup.Models.EF;
+@model List<User>
+    @Html.Partial("~/Views/Shared/Power.cshtml")
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+    <legend>用户管理</legend>
+</fieldset>
+<div>
+    <button class="layui-btn" onclick="edit(0)">添加用户</button>    
+</div>
+<div class="layui-table-scroll">
+    <table class="layui-table" lay-skin="row" lay-even>
+        <thead>
+            <tr>
+                <th><b>用户名</b></th>
+                <th><div class="txt-warp"><b>密码</b></div></th>
+                <th><div class="txt-warp"><b>类型</b></div></th>
+                <th><div class="txt-warp"><b>操作</b></div></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td><div class="txt-warp">@p.UserName</div></td>
+                    <td><div class="txt-warp">@p.PassWord</div></td>
+                    <td><div class="txt-warp">@(p.Type==0?"管理员":"普通用户")</div></td>
+                    <td>
+                        <div class="txt-warp">
+                            <a class="layui-btn layui-btn-xs" onclick="edit(@p.Id)" lay-event="edit">编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="userDel(@p.Id)" lay-event="del">删除</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+@{
+    if (ViewBag.save == 0)
+    {
+        <script>
+            alert("保存成功！")
+            location.href = "/User/List";
+        </script>
+    }
+}
+<script>
+    function edit(id) {
+        $.ajax({
+            url: "/User/Edit",
+            type: "Post",
+            dataType: "html",
+            data: { id: id },
+            success: function (html) {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-demo', //样式类名
+                        anim: 2,
+                        area: '700px',
+                        shadeClose: true, //开启遮罩关闭
+                        content: html
+                    });
+                });
+            }
+        })
+
+            }
+    function userDel(id) {
+        $.ajax({
+            url: "/User/Del",
+            type: "Post",
+            dataType: "json",
+            data: { id: id },
+            success: function (re) {
+                if (re.success) {
+                    alert("删除成功！");
+                    location.href = "/User/List";
+                }
+            }
+        })
+    }
+</script>
+

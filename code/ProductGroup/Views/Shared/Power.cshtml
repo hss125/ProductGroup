@@ -1,0 +1,13 @@
+﻿@using Newtonsoft.Json;
+@using ProductGroup.Models.EF;
+@{
+    HttpCookieCollection CookieCollect = HttpContext.Current.Request.Cookies;
+    User u = JsonConvert.DeserializeObject<User>(CookieCollect["user"].Value);
+    if (u.Type != 0)
+    {
+        <script>
+            alert("你没有权限！");
+            location.href = "/Home/Index";
+        </script>
+    }
+}

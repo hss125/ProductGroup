@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "组合数据列表";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Menu = 3;
+}
+@using ProductGroup.Models;
+@using ProductGroup.Models.EF;
+@using Newtonsoft.Json;
+@model GroupPage
+@{
+    string showstyle = "display:none";
+    HttpCookieCollection CookieCollect = HttpContext.Current.Request.Cookies;
+    User u = JsonConvert.DeserializeObject<User>(CookieCollect["user"].Value);
+    if (u.Type == 0)
+    {
+        showstyle = "";
+    }
+}
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+    <legend>源数据组合列表</legend>
+</fieldset>
+
+<div>
+    <div class="layui-form-item" style="width:300px;display:inline-block;padding-right:60px;vertical-align:middle">
+        <label class="layui-form-label" style="width:40px">日期</label>
+        <div class="layui-input-block" style="margin-left:80px">
+            <input type="text" class="layui-input" value="@ViewBag.Date" id="test1" placeholder="yyyy-MM-dd">
+        </div>
+    </div>
+    <button class="layui-btn" onclick="excelTask();">导出任务明细Excel</button>
+    <button class="layui-btn" onclick="excelHand();">导出信息采集Excel</button>
+    <div style="float:right">
+        @*<button class="layui-btn layui-btn-normal" style="@showstyle" onclick="Group(4);">重新组合</button>*@
+        <button class="layui-btn" onclick="excel();">导出分组Excel</button>
+    </div>
+</div>
+<div class="layui-tab" style="margin-bottom:0">
+    <ul class="layui-tab-title">
+        <li class="layui-this">组合数据</li>
+        <li>剩余未组合</li>
+    </ul>
+    <div class="layui-tab-content" style="padding-bottom:0">
+        <div class="layui-tab-item layui-show">
+            <div id="groupTable">
+                
+            </div>
+            <div id="demo7"></div>
+            
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-table-scroll">
+                <table class="layui-table">
+                    <thead>
+                        <tr>
+                            <th><div class="txt-warp"><b>店铺</b></div></th>
+                            <th><div class="txt-warp"><b>店铺名称</b></div></th>
+                            <th><div class="txt-warp"><b>客单价</b></div></th>
+                            <th><div class="txt-warp"><b>客单价备注</b></div></th>
+                            <th><div class="txt-warp"><b>关键词</b></div></th>
+                            <th><div class="txt-warp"><b>剩余单数</b></div></th>
+                            <th><div class="txt-warp"><b>主图</b></div></th>
+                            <th><div class="txt-warp"><b>筛选条件</b></div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var sur in Model.surplusList)
+                        {
+                            <tr>
+                                <td>@sur.pro.Shop</td>
+                                <td>@sur.pro.ShopName</td>
+                                <td>@sur.pro.Price</td>
+                                <td>@sur.pro.PriceMark</td>
+                                <td>@sur.pro.KeyWord</td>
+                                <td>@sur.Surplus</td>
+                                <td>
+                                    <div class="view-img-bd">
+                                        <i class="icon-file-image i-img"></i>
+                                        <div class="view-img"><img src="/Upload/@sur.pro.ImgUrl" /></div>
+                                    </div>
+                                </td>
+                                <td>@sur.pro.Screen</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('element', function () {
+        var $ = layui.jquery
+            , element = layui.element;       
+
+    });
+</script>
+<script>
+    function Group(count) {
+        $(".loading").show();
+        $.ajax({
+            url: "/Shared/SaveGroup",
+            type: "Post",
+            dataType: "json",
+            data: { groupcount: count},
+            success: function (result) {
+                if (result.code == 0) {
+                    $(".loading").hide();
+                    alert("组合成功！");
+                    location.href = "/Home/Group";
+                }
+            }
+        })
+    }
+    function excel() {
+        $(".loading").show();
+        $.ajax({
+            url: "/Shared/exportExcel",
+            type: "Post",
+            dataType: "json",
+            data: {},
+            success: function (result) {
+                if (result.code == 0) {
+                    $(".loading").hide();
+                    alert("导出成功！");
+                }
+            }
+        })
+    }
+    function excelHand() {
+        $(".loading").show();
+        $.ajax({
+            url: "/Shared/ExcelHand",
+            type: "Post",
+            dataType: "json",
+            data: {date: datavalue},
+            success: function (result) {
+                if (result.code == 0) {
+                    $(".loading").hide();
+                    alert("导出成功！");
+                }
+            }
+        })
+    }
+    function excelTask() {
+        $(".loading").show();
+        $.ajax({
+            url: "/Shared/ExcelTask",
+            type: "Post",
+            dataType: "json",
+            data: { date: datavalue},
+            success: function (result) {
+                if (result.code == 0) {
+                    $(".loading").hide();
+                    alert("导出成功！");
+                    //location.href = "/Home/Group";
+                }
+            }
+        })
+    }
+</script>
+<script>
+    
+</script>
+<script>
+    window.datavalue = '@(ViewBag.Date)';
+    layui.use(['laypage', 'layer'], function () {
+        var laypage = layui.laypage
+            , layer = layui.layer;   
+
+        //完整功能
+        laypage.render({
+            elem: 'demo7'
+            , count: @(Model.TotalCount)
+            , limit:10
+            , layout: ['count', 'prev', 'page', 'next',  'skip']
+            , jump: function (obj) {
+                //console.log(obj)
+                $.ajax({
+                    url: "/Home/Grouplist",
+                    type: "Post",
+                    dataType: "html",
+                    data: { curr: obj.curr, date:datavalue},
+                    success: function (data) {
+                        $('#groupTable').html(data);
+                    }
+                })
+            }
+        });
+    });
+</script>
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //常规用法
+        laydate.render({
+            elem: '#test1',
+            done: function (value, date) {
+                console.log(value);
+                location.href = "/Home/Group?date=" + value;
+            }
+        });
+    });
+</script>
+<style>
+    .layui-table-scroll { overflow: auto; height: calc(100vh - 235px); }
+</style>

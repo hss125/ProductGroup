@@ -1,0 +1,62 @@
+﻿@{
+    Layout = null;
+}
+@using ProductGroup.Models.EF;
+@using Newtonsoft.Json;
+@model List<Product>
+@{
+    string showstyle = "display:none";
+    HttpCookieCollection CookieCollect = HttpContext.Current.Request.Cookies;
+    User u = JsonConvert.DeserializeObject<User>(CookieCollect["user"].Value);
+    if (u.Type == 0)
+    {
+        showstyle = "";
+    }
+}
+<div class="layui-table-scroll">
+    <table class="layui-table" lay-skin="row" lay-even>
+        <thead>
+            <tr>
+                <th><b>店铺</b></th>
+                <th><div class="txt-warp"><b>店铺名称</b></div></th>
+                <th><div class="txt-warp"><b>单数</b></div></th>
+                <th><div class="txt-warp"><b>客单价</b></div></th>
+                <th><div class="txt-warp"><b>客单价备注</b></div></th>
+                <th><div class="txt-warp"><b>关键词</b></div></th>
+                <th><div class="txt-warp"><b>主图</b></div></th>
+                <th><div class="txt-warp"><b>筛选条件</b></div></th>
+                <th><div class="txt-warp"><b>客户</b></div></th>
+                <th><div class="txt-warp"><b>服务费</b></div></th>
+                <th><div class="txt-warp"><b>操作</b></div></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td><div class="txt-warp">@p.Shop</div></td>
+                    <td><div class="txt-warp" title="@p.ShopName">@p.ShopName</div></td>
+                    <td><div class="txt-warp">@p.OrderCount</div></td>
+                    <td><div class="txt-warp">@p.Price</div></td>
+                    <td><div class="txt-warp">@p.PriceMark</div></td>
+                    <td><div class="txt-warp">@p.KeyWord</div></td>
+                    <td>
+                        <div class="view-img-bd">
+                            <i class="icon-file-image i-img"></i>
+                            <div class="view-img"><img src="/Upload/@p.ImgUrl" /></div>
+                        </div>
+                    </td>
+                    <td><div class="txt-warp">@p.Screen</div></td>
+                    <td><div class="txt-warp">@p.ShopKeeper</div></td>
+                    <td><div class="txt-warp">@p.ServiceCost</div></td>
+                    <td>
+                        <a class="layui-btn layui-btn-xs" onclick="edit(@p.Id)" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" style="@showstyle" onclick="proDel(@p.Id)" lay-event="del">删除</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+

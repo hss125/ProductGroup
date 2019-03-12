@@ -1,0 +1,78 @@
+﻿@{ 
+    Layout = null;
+}
+@using ProductGroup.Models;
+@model List<GroupItem>
+<div class="layui-table-scroll">
+    <table class="layui-table" lay-even>
+        <thead>
+            <tr>
+                <th><div class="txt-warp"><b>任务编号</b></div></th>
+                <th><div class="txt-warp"><b>店铺1</b></div></th>
+                <th><div class="txt-warp"><b>店铺2</b></div></th>
+                <th><div class="txt-warp"><b>店铺3</b></div></th>
+                <th><div class="txt-warp"><b>店铺4</b></div></th>
+                <th><div class="txt-warp"><b>总金额</b></div></th>
+                <th><div class="txt-warp"><b>淘宝账号</b>&nbsp;<a class="layui-btn layui-btn-xs" onclick="HandOut(0)" lay-event="edit">全部保存</a></div></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.group.TaskID </td>
+                    <td>[@item.proList[0].Shop] @item.proList[0].ShopName</td>
+                    <td>[@item.proList[1].Shop] @item.proList[1].ShopName</td>
+                    <td>[@item.proList[2].Shop] @item.proList[2].ShopName</td>
+                    <td>
+                        @{
+                            if (item.proList.Count > 3)
+                            {
+                                    <span>
+                                        [@item.proList[3].Shop] @item.proList[3].ShopName
+                                    </span>
+
+                                }
+                            }
+
+                    </td>
+                    <td>
+                        @{
+                            decimal pri = 0;
+                            foreach (var pro in item.proList)
+                            {
+                                pri += (decimal)pro.Price;
+                            }
+                        }
+                        @pri
+                    </td>
+                    <td><input type="text" data-taskid="@item.group.Id" value="@item.group.WWId" style="vertical-align:middle;height:18px"/>&nbsp;
+                    <a onclick="HandOut(1,this)" class="layui-btn layui-btn-xs" lay-event="edit">保存</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    function HandOut(type, obj) {
+        var arr = [];
+        if (type == 0) {
+            $("[data-taskid]").each(function () {
+                arr.push({ Id: $(this).data("taskid"), WWId: $(this).val() });
+            })
+        } else {
+            arr.push({ Id: $(obj).prevAll("input").data("taskid"), WWId: $(obj).prevAll("input").val() });
+        }
+        $.ajax({
+            dataType: "json",
+            type: "Post",
+            url: "/Shared/HandOut",
+            data: { handList: arr},
+            success: function (result) {
+                alert("保存成功！");
+                location.href = "/Home/Group?date=" + datavalue;
+            }
+        })
+    }
+</script>
+

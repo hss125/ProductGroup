@@ -1,0 +1,96 @@
+﻿@{
+    Layout = null;
+}
+@using ProductGroup.Models.EF;
+@using Newtonsoft.Json;
+@model List<Collect>
+@*@{
+    string showstyle = "display:none";
+    HttpCookieCollection CookieCollect = HttpContext.Current.Request.Cookies;
+    User u = JsonConvert.DeserializeObject<User>(CookieCollect["user"].Value);
+    if (u.Type == 0)
+    {
+        showstyle = "";
+    }
+}*@
+<div class="layui-table-scroll">
+    <table class="layui-table" lay-skin="row" lay-even>
+        <thead>
+            <tr>
+                <th><b>序号</b></th>
+                <th><b>任务编号</b></th>
+                <th><div class="txt-warp"><b>旺旺ID</b></div></th>
+                <th><div class="txt-warp"><b>淘宝会员名照片</b></div></th>
+                <th><div class="txt-warp"><b>工号以及转账页面拍照</b></div></th>
+                <th><div class="txt-warp"><b>订单号</b></div></th>
+                <th><div class="txt-warp"><b>新零售城市合伙人</b></div></th>
+                <th><div class="txt-warp"><b>业务员姓名</b></div></th>
+                <th><div class="txt-warp"><b>备注</b></div></th>
+                <th><div class="txt-warp"><b>店铺名称</b></div></th>
+                <th><div class="txt-warp"><b>任务内商品金额(元)</b></div></th>
+            </tr>
+        </thead>
+        <tbody class="lastcollect-tr">
+            @{int i = 0; }
+            @foreach (var p in Model)
+            {
+                i++;
+                <tr class="@(p.LastCollect!=null?"haslastcollect-tr":"")" data-lcid="@p.LastCollect">
+                    <td>@((ViewBag.Curr - 1) * 10 + i)</td>
+                    <td>
+                        <div class="last-collect"></div>
+                    <div class="txt-warp">@p.TaskId</div></td>
+                    <td><div class="txt-warp">@p.WWId</div></td>
+                    <td>
+                        <span class="order-img">
+                            <i class="icon-file-image i-img" data-img="@p.WWIdImg"></i>
+                        </span>
+                    </td>
+                    <td>
+                        <div class="view-img-bd">
+                            <i class="icon-file-image i-img"></i>
+                            <div class="view-img"><img src="@p.TransferAccountsImg" /></div>
+                        </div>
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(p.OrderImg1))
+                        {
+                            <span class="order-img">
+                                <i class="icon-file-image i-img" data-img="@p.OrderImg1"></i>
+                            </span>
+                        }
+                        @if (!string.IsNullOrEmpty(p.OrderImg2))
+                        {
+                            <span class="order-img">
+                                <i class="icon-file-image i-img" data-img="@p.OrderImg2"></i>
+                            </span>
+                        }
+                        @if (!string.IsNullOrEmpty(p.OrderImg3))
+                        {
+                            <span class="order-img">
+                                <i class="icon-file-image i-img" data-img="@p.OrderImg3"></i>
+                            </span>
+                        }
+                        @if (!string.IsNullOrEmpty(p.OrderImg4))
+                        {
+                            <span class="order-img">
+                                <i class="icon-file-image i-img" data-img="@p.OrderImg4"></i>
+                            </span>
+                        }
+                    </td>
+                    <td><div class="txt-warp">@p.CityPartner</div></td>
+                    <td><div class="txt-warp">@p.Clerk</div></td>
+                    <td><div class="txt-warp">@p.Remarks</div></td>
+                    <td><div class="txt-warp">@p.ShopName</div></td>
+                    <td><div class="txt-warp">@p.TaskPrice</div></td>
+                    @*<td>
+                        <a class="layui-btn layui-btn-xs" onclick="edit(@p.Id)" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" style="@showstyle" onclick="proDel(@p.Id)" lay-event="del">删除</a>
+                    </td>*@
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+

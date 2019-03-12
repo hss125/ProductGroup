@@ -1,0 +1,147 @@
+﻿@{ 
+    Layout = null;
+}
+@using ProductGroup.Models.EF;
+@model Product
+<div style="padding:10px">
+    <form class="layui-form" action="/Home/SaveEdit">
+        <div class="layui-form-item">
+            <label class="layui-form-label">店铺</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.Shop, new { @class = "layui-input", @placeholder = "请输入店铺" })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">店铺名称</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.ShopName, new { @class = "layui-input", @placeholder = "请输入店铺名称" })
+            </div>
+        </div>
+        <div class="layui-form-item" style="display:none">
+            <label class="layui-form-label">任务编号</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.TaskId, new { @class = "layui-input", @placeholder = "请输入任务编号" })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">客单价</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.Price, new { @class = "layui-input", @placeholder = "￥" })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">客单价备注</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.PriceMark, new { @class = "layui-input", @placeholder = "请输入客单价备注" })
+            </div>
+        </div>
+        <div class="key-word">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">关键词</label>
+                    <div class="layui-input-inline">
+                        @Html.TextBoxFor(tb => tb.KeyWord, new { @class = "layui-input", @placeholder = "请输入关键词" })
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">单数</label>
+                    <div class="layui-input-inline">
+                        @Html.TextBoxFor(tb => tb.OrderCount, new { @class = "layui-input", @placeholder = "请输入客单价备注", onkeyup = @"value=value.replace(/[^\d]/g,'')" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">店主</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.ShopKeeper, new { @class = "layui-input", @placeholder = "请输入店主信息" })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">筛选条件</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.Screen, new { @class = "layui-input", @placeholder = "请输入筛选条件" })
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">主图</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" id="test1">上传图片</button>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" src="/Upload/@Model.ImgUrl" id="demo1">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" id="sub" lay-filter="demo1" style="display:none">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary" style="margin-left:130px">重置</button>
+            </div>
+        </div>
+        @Html.HiddenFor(h => h.Id)
+        @Html.HiddenFor(h => h.ImgUrl)
+    </form>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" onclick="submit()" style="margin-top:-87px">立即提交</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        layui.use('upload', function () {
+            var $ = layui.jquery
+                , upload = layui.upload;
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                , url: '/Shared/Upload'
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code > 0) {
+                        return layer.msg('上传失败');
+                    }
+                    else {
+                        $("input[name=ImgUrl]").val(res.data.src);
+                    }
+                    console.log(res);
+                    //上传成功
+                }
+                , error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs layui-btn-warm demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+        });
+        $("input[name=Price]").keyup(function () {
+            var reg = $(this).val().match(/\d+\.?\d{0,2}/);
+            var txt = '';
+            if (reg != null) {
+                txt = reg[0];
+            }
+            $(this).val(txt);
+        }).change(function () {
+            $(this).keyup();
+        });
+    })
+    function submit() {
+        $("#sub").click();
+
+    }
+</script>

@@ -1,0 +1,219 @@
+﻿@{
+    ViewBag.Title = "产品添加";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Menu = 1;
+}
+@using ProductGroup.Models.EF;
+@model Product
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>源数据录入</legend>
+</fieldset>
+<form class="layui-form" action="/Home/Add">
+    <div class="layui-form-item">
+        <label class="layui-form-label">店铺</label>
+        <div class="layui-input-block">
+            @Html.TextBoxFor(tb => tb.Shop,new {@class="layui-input", @placeholder = "请输入店铺" })
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">店铺名称</label>
+        <div class="layui-input-block">
+            <div class="shop-down-bd">
+                @Html.TextBoxFor(tb => tb.ShopName, new { @class = "layui-input", @placeholder = "请输入店铺名称", autocomplete= "off" })
+                <div class="shop-down">
+                    <label><i class="icon-remove-sign"></i></label>
+                    <ul>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" style="display:none">
+        <label class="layui-form-label">任务编号</label>
+        <div class="layui-input-block">
+            @Html.TextBoxFor(tb => tb.TaskId, new { @class = "layui-input", @placeholder = "请输入任务编号" })
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">客单价</label>
+        <div class="layui-input-block">
+            @Html.TextBoxFor(tb => tb.Price, new { @class = "layui-input", @placeholder = "￥" })
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">客单价备注</label>
+        <div class="layui-input-block">
+            @Html.TextBoxFor(tb => tb.PriceMark, new { @class = "layui-input", @placeholder = "请输入客单价备注" })
+        </div>
+    </div>
+    <div class="key-word">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">关键词</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">单数</label>
+                <div class="layui-input-inline">
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" name="date" id="date" lay-verify="date" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <i class="icon-plus-sign"></i>
+    </div>
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">筛选条件</label>
+        <div class="layui-input-block">
+            @Html.TextBoxFor(tb => tb.Screen, new { @class = "layui-input", @placeholder = "请输入筛选条件" })
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">主图</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" id="test1">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" id="sub" lay-filter="demo1" style="display:none">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary" style="margin-left:130px">重置</button>
+        </div>
+    </div>
+    @Html.HiddenFor(h=>h.ImgUrl)
+    @Html.HiddenFor(h => h.KeyWord)
+</form> 
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" onclick="submit()" style="margin-top:-87px">立即提交</button>
+    </div>
+</div>
+@{ 
+    if (ViewBag.save == 0)
+    {
+        <script>
+            alert("添加成功！")
+            location.href = "/Home/ProductAdd";
+        </script>
+    }
+}
+<script>
+    $(function () {
+        layui.use('upload', function () {
+            var $ = layui.jquery
+                , upload = layui.upload;
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                , url: '/Shared/Upload'
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code > 0) {
+                        return layer.msg('上传失败');
+                    }
+                    else {
+                        $("input[name=ImgUrl]").val(res.data.src);
+                    }
+                    console.log(res);
+                    //上传成功
+                }
+                , error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs layui-btn-warm demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+        });
+
+        $(".key-word .icon-plus-sign").click(function () {
+            var item = $(".key-word .layui-form-item").eq(0).clone()
+            item.find("input[type=text]").val("");
+            item.append('<i class="icon-minus-sign"></i>');
+            $(".key-word").append(item);
+        })
+        $(".key-word").on("click", ".icon-minus-sign", function () {
+            $(this).closest(".layui-form-item").remove();
+        })
+        $("input[name=Price]").keyup(function () {
+            var reg = $(this).val().match(/\d+\.?\d{0,2}/);
+            var txt = '';
+            if (reg != null) {
+                txt = reg[0];
+            }
+            $(this).val(txt);
+        }).change(function () {
+            $(this).keyup();
+        });
+    })
+    function submit() {
+        var keys = [];
+        $(".key-word .layui-form-item").each(function () {
+            if (!!$(this).find("input[name=number]").val()) {
+                keys.push({ key: $(this).find("input[name=number]").val(), count: $(this).find("input[name=date]").val() });
+            }            
+        })
+        $("input[name=KeyWord]").val(JSON.stringify(keys));
+        //console.log(keys);
+        $("#sub").click();
+
+    }
+    var prolist = [];
+    $("#ShopName").keyup(function () {
+        var key = $(this).val();
+        if (key == "") { return; }
+        $.ajax({
+            url: "/Shared/ShopList",
+            type: "Post",
+            dataType: "json",
+            data: { words: key },
+            success: function (data) {
+                console.log(data);
+                prolist = data;
+                $(".shop-down ul").html("");
+                for (var i = 0; i < data.length; i++) {
+                    $(".shop-down ul").append("<li data-Id='" + data[i].Id + "' >" + data[i].ShopName+"</li>");
+                }
+                if (data.length > 0) {
+                    $(".shop-down").show();
+                }
+            }
+        })
+    })
+    $(".shop-down-bd").on("click", ".shop-down li", function () {
+        var id = $(this).attr("data-Id");
+        var pro = $.grep(prolist, function (item) {
+            return item.Id == id;
+        })
+        $("#Shop").val(pro[0].Shop);
+        $("#ShopName").val(pro[0].ShopName);
+        $("#Price").val(pro[0].Price);
+        $("#PriceMark").val(pro[0].PriceMark);
+        $("#Screen").val(pro[0].Screen); 
+        $("#ImgUrl").val(pro[0].ImgUrl);
+        $("#demo1").attr("src","/Upload"+pro[0].ImgUrl);
+        $(".shop-down").hide();
+    })
+    $(".shop-down > label i").click(function () {
+        $(".shop-down").hide();
+    })
+</script>

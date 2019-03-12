@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "信息采集";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Menu = 1;
+}
+@using ProductGroup.Models.EF;
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+@model Collect
+
+    <div style="padding:12px;padding-top:0">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>信息录入</legend>
+        </fieldset>
+        <form class="layui-form" action="/InfoCollect/Collect">
+            <div class="layui-form-item fi">
+                <label>任务编号</label>
+                <div>
+                    @Html.TextBoxFor(tb => tb.TaskId, new { @class = "layui-input", @placeholder = "请输入任务编号" })
+                </div>
+            </div>
+            <div class="layui-form-item fi">
+                <label>旺旺ID</label>
+                <div>
+                    @Html.TextBoxFor(tb => tb.WWId, new { @class = "layui-input", @placeholder = "请输入旺旺账号" })
+                </div>
+            </div>
+            <div class="layui-form-item fi">
+                <label>淘宝会员名照片</label>
+                <div>
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" id="test1">上传图片</button>
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="demo1">
+                            <p id="demoText"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item fi">
+                <label>订单编号</label>
+                <div>
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" id="test3">多图片上传</button>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            预览图：
+                            <div class="layui-upload-list" id="demo3"></div>
+                        </blockquote>
+                    </div>
+                </div>
+                @Html.HiddenFor(h=>h.OrderImg1)
+                @Html.HiddenFor(h => h.OrderImg2)
+                @Html.HiddenFor(h => h.OrderImg3)
+                @Html.HiddenFor(h => h.OrderImg4)
+            </div>
+            <div class="layui-form-item fi">
+                <label>工号以及转账页面拍照</label>
+                <div>
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" id="test2">上传图片</button>
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="demo2">
+                            <p id="demoText"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item fi">
+                <label>新零售城市合伙人</label>
+                <div>
+                    @Html.TextBoxFor(tb => tb.CityPartner, new { @class = "layui-input", @placeholder = "新零售城市合伙人" })
+                </div>
+            </div>
+            <div class="layui-form-item fi">
+                <label>业务员姓名</label>
+                <div>
+                    @Html.TextBoxFor(tb => tb.Clerk, new { @class = "layui-input", @placeholder = "请输入业务员姓名" })
+                </div>
+            </div>
+            <div class="layui-form-item fi">
+                <label>备注</label>
+                <div>
+                    @Html.TextBoxFor(tb => tb.Remarks, new { @class = "layui-input", @placeholder = "选填备注" })
+                </div>
+            </div>
+            <div class="layui-form-item fi">
+                <label>店铺名称</label>
+                <div>
+                    @Html.TextBoxFor(tb => tb.ShopName, new { @class = "layui-input", @placeholder = "请输入店铺名城" })
+                </div>
+            </div>
+            <div class="layui-form-item fi">
+                <label>任务内商品金额(元)</label>
+                <div>
+                    @Html.TextBoxFor(tb => tb.TaskPrice, new { @class = "layui-input", @placeholder = "$" })
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" id="sub" lay-filter="demo1">立即提交</button>
+                </div>
+            </div>
+            @Html.HiddenFor(h => h.WWIdImg)
+            @Html.HiddenFor(h => h.TransferAccountsImg)
+        </form>
+    </div>
+@{ 
+    if (ViewBag.save == 0)
+    {
+        <script>
+            alert("提交成功！");
+            location.href = "/InfoCollect/Collect";
+        </script>
+    }
+    else if (ViewBag.save == -1)
+    {
+        <script>
+            alert("任务编号不存在！")
+        </script>
+    }
+    else if (ViewBag.save == -2)
+    {
+        <script>
+            alert("同一个账号不能在一月内多次任务！");
+            location.href = "/InfoCollect/Collect";
+        </script>
+    }
+}
+<script>
+            layui.use('upload', function () {
+                var $ = layui.jquery
+                    , upload = layui.upload;
+
+                //普通图片上传
+                var uploadInst = upload.render({
+                    elem: '#test1'
+                    , url: '/InfoCollect/Upload'
+                    , before: function (obj) {
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function (index, file, result) {
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    , done: function (res) {
+                        //如果上传失败
+                        if (!res.succ) {
+                            return layer.msg('上传失败');
+                        }
+                        else {
+                            $("input[name=WWIdImg]").val(res.msg);
+                        }
+                        console.log(res);
+                        //上传成功
+                    }
+                    , error: function () {
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs layui-btn-warm demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function () {
+                            uploadInst.upload();
+                        });
+                    }
+                });
+                var uploadInst2 = upload.render({
+                    elem: '#test2'
+                    , url: '/InfoCollect/Upload'
+                    , before: function (obj) {
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function (index, file, result) {
+                            $('#demo2').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    , done: function (res) {
+                        //如果上传失败
+                        if (!res.succ) {
+                            return layer.msg('上传失败');
+                        }
+                        else {
+                            $("input[name=TransferAccountsImg]").val(res.msg);
+                        }
+                        console.log(res);
+                        //上传成功
+                    }
+                    , error: function () {
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs layui-btn-warm demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function () {
+                            uploadInst.upload();
+                        });
+                    }
+                });
+                //多图片上传
+                upload.render({
+                    elem: '#test3'
+                    , url: '/InfoCollect/MultipleUpload'
+                    , multiple: true
+                    , before: function (obj) {
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function (index, file, result) {
+                            //$('#demo3').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                        });
+                    }
+                    , done: function (res) {
+                        $('#demo3').append('<div class="imgitem"><i onclick="delimg(this)" class="icon-remove-sign"></i><img src="' +res.msg + '" class="layui-upload-img"></div>')
+                        calcimg();
+                        //上传完毕
+                    }
+                });
+            });
+            function delimg(obj) {
+                $(obj).parent(".imgitem").remove();
+                calcimg();
+            }
+            function calcimg() {
+                $("#OrderImg1").val($('#demo3 img').eq(0).attr("src") || "");
+                $("#OrderImg2").val($('#demo3 img').eq(1).attr("src") || "");
+                $("#OrderImg3").val($('#demo3 img').eq(2).attr("src") || "");
+                $("#OrderImg4").val($('#demo3 img').eq(3).attr("src") || "");
+            }
+</script>
+<style>
+    body { background:#fff}
+    .layui-form-label { width:135px}
+    .layui-input-block { margin-left:168px}
+</style>

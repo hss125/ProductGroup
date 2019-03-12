@@ -1,0 +1,46 @@
+﻿@{ 
+    Layout = null;
+}
+@using ProductGroup.Models.EF;
+@model User
+<div style="padding:10px">
+    <form class="layui-form" action="/User/SaveEdit">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.UserName, new { @class = "layui-input", @placeholder = "请输入用户名" })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.PassWord, new { @class = "layui-input", @placeholder = "请输入密码" })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                @Html.TextBoxFor(tb => tb.Type, new { @class = "layui-input", @placeholder = "0为管理员，1为普通用户" })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" id="sub" lay-filter="demo1" style="display:none">立即提交</button>
+            </div>
+        </div>
+        @Html.HiddenFor(h => h.Id)
+    </form>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" onclick="submit()" style="margin-top:-87px">立即提交</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function submit() {
+        
+        $("#sub").click();
+
+    }
+</script>

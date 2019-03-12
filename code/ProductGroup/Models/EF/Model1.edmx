@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ProductGroupModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Collect">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskId" Type="nvarchar" MaxLength="150" />
+          <Property Name="WWId" Type="nvarchar" MaxLength="150" />
+          <Property Name="WWIdImg" Type="nvarchar" MaxLength="150" />
+          <Property Name="TransferAccountsImg" Type="nvarchar" MaxLength="150" />
+          <Property Name="CityPartner" Type="nvarchar" MaxLength="150" />
+          <Property Name="Clerk" Type="nvarchar" MaxLength="50" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="150" />
+          <Property Name="ShopName" Type="nvarchar" MaxLength="150" />
+          <Property Name="TaskPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CreatDate" Type="datetime" />
+          <Property Name="OrderImg1" Type="nvarchar" MaxLength="150" />
+          <Property Name="OrderImg2" Type="nvarchar" MaxLength="150" />
+          <Property Name="OrderImg3" Type="nvarchar" MaxLength="150" />
+          <Property Name="OrderImg4" Type="nvarchar" MaxLength="150" />
+          <Property Name="LastCollect" Type="int" />
+        </EntityType>
+        <EntityType Name="CollectHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubmitDate" Type="datetime" />
+          <Property Name="TaskId" Type="nvarchar" MaxLength="150" />
+          <Property Name="MemberName" Type="nvarchar" MaxLength="150" />
+          <Property Name="Clerk" Type="nvarchar" MaxLength="150" />
+          <Property Name="CityPartner" Type="nvarchar" MaxLength="150" />
+          <Property Name="CreatDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskID" Type="nvarchar" MaxLength="150" />
+          <Property Name="ProId" Type="nvarchar" MaxLength="150" />
+          <Property Name="SurplusCount" Type="int" />
+          <Property Name="WWId" Type="nvarchar" MaxLength="150" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="WWInputDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Shop" Type="nvarchar" MaxLength="150" />
+          <Property Name="ShopName" Type="nvarchar" MaxLength="150" />
+          <Property Name="TaskId" Type="nchar" MaxLength="150" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PriceMark" Type="nvarchar" MaxLength="150" />
+          <Property Name="KeyWord" Type="nvarchar" MaxLength="150" />
+          <Property Name="OrderCount" Type="int" />
+          <Property Name="Screen" Type="nvarchar" MaxLength="150" />
+          <Property Name="ImgUrl" Type="nvarchar" MaxLength="150" />
+          <Property Name="IsDelete" Type="int" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ShopKeeper" Type="nvarchar" MaxLength="150" />
+          <Property Name="ServiceCost" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="150" />
+          <Property Name="PassWord" Type="nvarchar" MaxLength="150" />
+          <Property Name="Type" Type="int" />
+          <Property Name="CreatTime" Type="datetime" />
+          <Property Name="Disable" Type="bit" />
+        </EntityType>
+        <EntityContainer Name="ProductGroupModelStoreContainer">
+          <EntitySet Name="Collect" EntityType="Self.Collect" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CollectHistory" EntityType="Self.CollectHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProductGroupModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ProId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SurplusCount" Type="Int32" />
+          <Property Name="WWId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="WWInputDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Shop" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ShopName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TaskId" Type="String" MaxLength="150" FixedLength="true" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PriceMark" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWord" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="OrderCount" Type="Int32" />
+          <Property Name="Screen" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ImgUrl" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="IsDelete" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ShopKeeper" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceCost" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityContainer Name="ProductGroupEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Groups" EntityType="Self.Group" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Users" EntityType="ProductGroupModel.User" />
+          <EntitySet Name="Collects" EntityType="ProductGroupModel.Collect" />
+          <EntitySet Name="CollectHistories" EntityType="ProductGroupModel.CollectHistory" />
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PassWord" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="CreatTime" Type="DateTime" Precision="3" />
+          <Property Name="Disable" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Collect">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="WWId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="WWIdImg" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TransferAccountsImg" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CityPartner" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Clerk" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ShopName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TaskPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CreatDate" Type="DateTime" Precision="3" />
+          <Property Name="OrderImg1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="OrderImg2" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="OrderImg3" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="OrderImg4" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="LastCollect" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CollectHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubmitDate" Type="DateTime" Precision="3" />
+          <Property Name="TaskId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="MemberName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Clerk" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CityPartner" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CreatDate" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProductGroupModelStoreContainer" CdmEntityContainer="ProductGroupEntities">
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="ProductGroupModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="WWInputDate" ColumnName="WWInputDate" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="WWId" ColumnName="WWId" />
+                <ScalarProperty Name="SurplusCount" ColumnName="SurplusCount" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+                <ScalarProperty Name="ProId" ColumnName="ProId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="ProductGroupModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ServiceCost" ColumnName="ServiceCost" />
+                <ScalarProperty Name="ShopKeeper" ColumnName="ShopKeeper" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Shop" ColumnName="Shop" />
+                <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PriceMark" ColumnName="PriceMark" />
+                <ScalarProperty Name="KeyWord" ColumnName="KeyWord" />
+                <ScalarProperty Name="OrderCount" ColumnName="OrderCount" />
+                <ScalarProperty Name="Screen" ColumnName="Screen" />
+                <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ProductGroupModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Disable" ColumnName="Disable" />
+                <ScalarProperty Name="CreatTime" ColumnName="CreatTime" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Collects">
+            <EntityTypeMapping TypeName="ProductGroupModel.Collect">
+              <MappingFragment StoreEntitySet="Collect">
+                <ScalarProperty Name="LastCollect" ColumnName="LastCollect" />
+                <ScalarProperty Name="OrderImg4" ColumnName="OrderImg4" />
+                <ScalarProperty Name="OrderImg3" ColumnName="OrderImg3" />
+                <ScalarProperty Name="OrderImg2" ColumnName="OrderImg2" />
+                <ScalarProperty Name="OrderImg1" ColumnName="OrderImg1" />
+                <ScalarProperty Name="CreatDate" ColumnName="CreatDate" />
+                <ScalarProperty Name="TaskPrice" ColumnName="TaskPrice" />
+                <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Clerk" ColumnName="Clerk" />
+                <ScalarProperty Name="CityPartner" ColumnName="CityPartner" />
+                <ScalarProperty Name="TransferAccountsImg" ColumnName="TransferAccountsImg" />
+                <ScalarProperty Name="WWIdImg" ColumnName="WWIdImg" />
+                <ScalarProperty Name="WWId" ColumnName="WWId" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectHistories">
+            <EntityTypeMapping TypeName="ProductGroupModel.CollectHistory">
+              <MappingFragment StoreEntitySet="CollectHistory">
+                <ScalarProperty Name="CreatDate" ColumnName="CreatDate" />
+                <ScalarProperty Name="CityPartner" ColumnName="CityPartner" />
+                <ScalarProperty Name="Clerk" ColumnName="Clerk" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="SubmitDate" ColumnName="SubmitDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

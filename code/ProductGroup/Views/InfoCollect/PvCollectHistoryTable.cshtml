@@ -1,0 +1,33 @@
+﻿@{
+    Layout = null;
+}
+@using ProductGroup.Models.EF;
+@using Newtonsoft.Json;
+@model List<CollectHistory>
+<div class="layui-table-scroll">
+    <table class="layui-table" lay-skin="row" lay-even>
+        <thead>
+            <tr>
+                <th><div class="txt-warp"><b>会员名</b></div></th>
+                <th><div class="txt-warp"><b>任务编号</b></div></th>
+                <th><div class="txt-warp"><b>提交时间</b></div></th>
+                <th><div class="txt-warp"><b>业务员</b></div></th>
+                <th><div class="txt-warp"><b>城市合伙人</b></div></th>
+            </tr>
+        </thead>
+        <tbody class="lastcollect-tr">
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td><div class="txt-warp">@p.MemberName</div></td>
+                    <td><div class="txt-warp">@p.TaskId</div></td>
+                    <td><div class="txt-warp">@p.SubmitDate</div></td>
+                    <td><div class="txt-warp">@p.Clerk</div></td>
+                    <td><div class="txt-warp">@p.CityPartner</div></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+

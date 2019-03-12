@@ -1,0 +1,66 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Newtonsoft.Json;
+@using ProductGroup.Models.EF;
+<div class="page">
+    <div class="p-menu">
+        <div class="user-face">
+            <img src="~/Content/Images/face_def.jpg">
+        </div>
+        <ul>
+            <a href="/Home/ProductAdd">
+                <li class="@(ViewBag.Menu == 1 ? "select" : "")">
+                    <i class="icon-plus"></i>
+                    <span class="dt-tips">商品添加</span>
+                </li>
+            </a>
+            <a href="/Home/Index">
+                <li class="@(ViewBag.Menu == 2 ? "select" : "")">
+                    <i class="icon-table"></i>
+                    <span class="dt-tips">商品列表</span>
+                </li>
+            </a>
+            <a href="/Home/Group">
+                <li class="@(ViewBag.Menu == 3 ? "select" : "")">
+                    <i class="icon-cubes"></i>
+                    <span class="dt-tips">商品组合</span>
+                </li>
+            </a>
+            @{
+                HttpCookieCollection CookieCollect = HttpContext.Current.Request.Cookies;
+                User u = JsonConvert.DeserializeObject<User>(CookieCollect["user"].Value);
+                if (u.Type == 0)
+                {
+                    <a href="/User/List">
+                        <li class="@(ViewBag.Menu==4?"select":"")">
+                            <i class="icon-user"></i>
+                            <span class="dt-tips">用户管理</span>
+                        </li>
+                    </a>
+                }
+            }
+            <a href="/InfoCollect/Index">
+                <li class="@(ViewBag.Menu == 5 ? "select" : "")">
+                    <i class="icon-file-excel"></i>
+                    <span class="dt-tips">信息收集</span>
+                </li>
+            </a>
+            <a href="/InfoCollect/CollectHistory">
+                <li class="@(ViewBag.Menu == 6 ? "select" : "")">
+                    <i class="icon-history"></i>
+                    <span class="dt-tips">问卷星历史</span>
+                </li>
+            </a>
+        </ul>
+    </div>
+    <div class="p-main indent">
+        @RenderBody()
+    </div>
+</div>
+
+
+<div class="loading">
+    <label></label>
+    <div><img src="~/Content/Images/loading.gif" /><i></i></div>
+</div>

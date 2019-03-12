@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "信息采集";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Menu = 1;
+}
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+@using ProductGroup.Models.EF;
+@model List<Collect>
+
+    <div style="padding:12px;padding-top:0">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>信息查询</legend>
+        </fieldset>
+        <form class="layui-form" action="/InfoCollect/CollectSeach">
+            <div class="layui-form-item fi">
+                <div style="display:flex">
+                    <input name="clerk" value="@ViewBag.clerk" style="flex:1" type="text" class="layui-input" placeholder="请输入业务员姓名"/>
+                    <input type="submit" value="搜索" class="layui-btn"/>
+                </div>
+            </div>
+        </form>
+    </div>
+@if (Model.Count > 0)
+{
+    <div class="layui-table-scroll">
+        <table class="layui-table" lay-skin="row" lay-even>
+            <thead>
+                <tr>
+                    <th><b>任务编号</b></th>
+                    <th><div class="txt-warp"><b>旺旺ID</b></div></th>
+                    <th><div class="txt-warp"><b>订单号</b></div></th>
+                    <th><div class="txt-warp"><b>城市合伙人</b></div></th>
+                    <th><div class="txt-warp"><b>业务员姓名</b></div></th>
+                    <th><div class="txt-warp"><b>店铺名称</b></div></th>
+                    <th><div class="txt-warp"><b>任务金额</b></div></th>
+                </tr>
+            </thead>
+            <tbody class="lastcollect-tr">
+                @foreach (var p in Model)
+                {
+                    <tr class="@(p.LastCollect!=null?"haslastcollect-tr":"")" data-lcid="@p.LastCollect">
+                        <td>
+                            <div class="last-collect"></div>
+                            <div class="txt-warp">@p.TaskId</div>
+                        </td>
+                        <td><div class="txt-warp">@p.WWId</div></td>
+                        <td></td>
+                        <td><div class="txt-warp">@p.CityPartner</div></td>
+                        <td><div class="txt-warp">@p.Clerk</div></td>
+                        <td><div class="txt-warp">@p.ShopName</div></td>
+                        <td><div class="txt-warp">@p.TaskPrice</div></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+}
+
+<style>
+    body { background:#fff}
+    .layui-table-scroll .layui-table .txt-warp{ font-size:12px}
+    .layui-table td, .layui-table th { padding:3px}
+</style>
