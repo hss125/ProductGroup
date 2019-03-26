@@ -50,16 +50,20 @@ namespace WebApplication1.Controllers
             {
                 foreach (var pro in proList)
                 {
-                    string name = "";
-                    count++;
-                    name += "" + DateTime.Now.AddDays(1).ToString("MMdd") + "Q";
-                    var l = 4 - count.ToString().Length;
-                    for (var p = 0; p < l; p++)
+                    for (var i = 0; i < pro.OrderCount; i++)
                     {
-                        name += "0";
+                        string name = "";
+                        count++;
+                        name += "" + DateTime.Now.AddDays(1).ToString("MMdd") + "Q";
+                        var l = 4 - count.ToString().Length;
+                        for (var p = 0; p < l; p++)
+                        {
+                            name += "0";
+                        }
+                        name += count;
+                        pg.Groups.Add(new Group { TaskID = name, ProId = pro.Id.ToString(), Date = DateTime.Now.AddDays(1) });
                     }
-                    name += count;
-                    pg.Groups.Add(new Group { TaskID = name, ProId = pro.Id.ToString(), Date = DateTime.Now.AddDays(1) });
+                    
                 }
                 pg.SaveChanges();
             }
