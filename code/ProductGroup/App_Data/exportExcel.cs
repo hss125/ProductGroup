@@ -403,75 +403,75 @@ namespace Utility
             ms.Dispose();
         }
         //导出单个产品的excel
-        public void exportOneExcel(string mappath, Product pro)
-        {
-            var name = DateTime.Now.AddDays(1).ToString("MMdd")+"_"+pro.Shop + "_" + pro.KeyWord;
-           // name += pro.Price + "_" + pri.ToString();
-            //name += "_" + DateTime.Now.AddDays(1).ToString("yyyyMMdd");
-            //创建工作薄
-            var workbook = new HSSFWorkbook();
-            //创建表
-            var table = workbook.CreateSheet(name);
-            // 添加表头
-            var row1 = table.CreateRow(0);
-            string[] head = { "店铺", "任务编号", "店铺名称", "主图", "客单价(元)", "客单价备注", "搜索关键词", "筛选条件" };
-            for (int j = 0; j < head.Count(); j++)
-            {
-                var cell1 = row1.CreateCell(j);
-                setCellStyle(workbook, cell1);
-                cell1.SetCellValue(head[j]);
-            }
-            table.SetColumnWidth(0, 1500);
-            table.SetColumnWidth(1, 2200);
-            table.SetColumnWidth(2, 5000);
-            table.SetColumnWidth(3, 8000);
-            table.SetColumnWidth(4, 5000);
-            table.SetColumnWidth(5, 9000);
-            table.SetColumnWidth(6, 9000);
-            table.SetColumnWidth(7, 4000);
-            var row = table.CreateRow(1);
-            row.Height = 2800;
+        //public void exportOneExcel(string mappath, Product pro)
+        //{
+        //    var name = DateTime.Now.AddDays(1).ToString("MMdd")+"_"+pro.Shop + "_" + pro.KeyWord;
+        //   // name += pro.Price + "_" + pri.ToString();
+        //    //name += "_" + DateTime.Now.AddDays(1).ToString("yyyyMMdd");
+        //    //创建工作薄
+        //    var workbook = new HSSFWorkbook();
+        //    //创建表
+        //    var table = workbook.CreateSheet(name);
+        //    // 添加表头
+        //    var row1 = table.CreateRow(0);
+        //    string[] head = { "店铺", "任务编号", "店铺名称", "主图", "客单价(元)", "客单价备注", "搜索关键词", "筛选条件" };
+        //    for (int j = 0; j < head.Count(); j++)
+        //    {
+        //        var cell1 = row1.CreateCell(j);
+        //        setCellStyle(workbook, cell1);
+        //        cell1.SetCellValue(head[j]);
+        //    }
+        //    table.SetColumnWidth(0, 1500);
+        //    table.SetColumnWidth(1, 2200);
+        //    table.SetColumnWidth(2, 5000);
+        //    table.SetColumnWidth(3, 8000);
+        //    table.SetColumnWidth(4, 5000);
+        //    table.SetColumnWidth(5, 9000);
+        //    table.SetColumnWidth(6, 9000);
+        //    table.SetColumnWidth(7, 4000);
+        //    var row = table.CreateRow(1);
+        //    row.Height = 2800;
 
-            var cell = row.CreateCell(0);
-            cell.SetCellValue(pro.Shop);
-            var cell2 = row.CreateCell(1);
-            cell2.SetCellValue("a");
-            var cell3 = row.CreateCell(2);
-            cell3.SetCellValue(pro.ShopName);
-            var cell4 = row.CreateCell(4);
-            cell4.SetCellValue(pro.Price.ToString());
-            var cell5 = row.CreateCell(5);
-            cell5.SetCellValue(pro.PriceMark);
-            var cell6 = row.CreateCell(6);
-            cell6.SetCellValue(pro.KeyWord);
-            var cell7 = row.CreateCell(7);
-            cell7.SetCellValue(pro.Screen);
+        //    var cell = row.CreateCell(0);
+        //    cell.SetCellValue(pro.Shop);
+        //    var cell2 = row.CreateCell(1);
+        //    cell2.SetCellValue("a");
+        //    var cell3 = row.CreateCell(2);
+        //    cell3.SetCellValue(pro.ShopName);
+        //    var cell4 = row.CreateCell(4);
+        //    cell4.SetCellValue(pro.Price.ToString());
+        //    var cell5 = row.CreateCell(5);
+        //    cell5.SetCellValue(pro.PriceMark);
+        //    var cell6 = row.CreateCell(6);
+        //    cell6.SetCellValue(pro.KeyWord);
+        //    var cell7 = row.CreateCell(7);
+        //    cell7.SetCellValue(pro.Screen);
 
-            ICell[] cells = { cell, cell2, cell3, cell5, cell7 };
-            setCellStyle2(workbook, cells);
-            setCellStyle4(workbook, cell4);
-            setCellStyle3(workbook, cell6);
+        //    ICell[] cells = { cell, cell2, cell3, cell5, cell7 };
+        //    setCellStyle2(workbook, cells);
+        //    setCellStyle4(workbook, cell4);
+        //    setCellStyle3(workbook, cell6);
 
-            string picurl = "/Upload/" + pro.ImgUrl;  //图片存储路径   
-            AddPieChart(table, workbook, picurl, 1, 3, mappath);
+        //    string picurl = "/Upload/" + pro.ImgUrl;  //图片存储路径   
+        //    AddPieChart(table, workbook, picurl, 1, 3, mappath);
 
-            // 写入 
-            MemoryStream ms = new MemoryStream();
-            workbook.Write(ms);
-            workbook = null;
-            var zh = @"D:\Excel\分组报表\";
-            CreatFolder(zh);
-            for (var i = 1; i < pro.OrderCount+1; i++)
-            {
-                using (FileStream fs = new FileStream(zh + name+"_"+i + ".xls", FileMode.Create, FileAccess.Write))
-                {
-                    byte[] data = ms.ToArray();
-                    fs.Write(data, 0, data.Length);
-                    fs.Flush();
-                }
-            }            
-            ms.Close();
-            ms.Dispose();
-        }
+        //    // 写入 
+        //    MemoryStream ms = new MemoryStream();
+        //    workbook.Write(ms);
+        //    workbook = null;
+        //    var zh = @"D:\Excel\分组报表\";
+        //    CreatFolder(zh);
+        //    for (var i = 1; i < pro.OrderCount+1; i++)
+        //    {
+        //        using (FileStream fs = new FileStream(zh + name+"_"+i + ".xls", FileMode.Create, FileAccess.Write))
+        //        {
+        //            byte[] data = ms.ToArray();
+        //            fs.Write(data, 0, data.Length);
+        //            fs.Flush();
+        //        }
+        //    }            
+        //    ms.Close();
+        //    ms.Dispose();
+        //}
     }
 }

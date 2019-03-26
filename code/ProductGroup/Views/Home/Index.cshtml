@@ -28,7 +28,7 @@
     <button class="layui-btn" onclick="ipmort()" style="@showstyle">导入数据</button>
     @*<button onclick="Group(3);" class="layui-btn layui-btn-normal" style="@showstyle">3个组合</button>
     <button onclick="Group(4);" class="layui-btn layui-btn-normal" style="@showstyle">4个组合</button>*@
-    <button onclick="GroupOne();" class="layui-btn layui-btn-normal">单个导出</button>
+    <button onclick="GroupOne();" class="layui-btn layui-btn-normal">单个分组</button>
 
     <button onclick="exportToayPro();" class="layui-btn layui-btn-normal">导出当天数据</button>
     <button onclick="exportSamePro();" class="layui-btn layui-btn-normal">导出当月数据</button>
@@ -110,14 +110,15 @@
     function GroupOne() {
         $(".loading").show();
         $.ajax({
-            url: "/Export/exportOneExcel",
+            url: "/Shared/SaveOneGroup",
             type: "Post",
             dataType: "json",
             data: {  },
             success: function (result) {
                 $(".loading").hide();
                 if (result.code == 0) {
-                    alert("单个导出成功！");
+                    alert("单个分组成功！");
+                    location.href = "/Home/Group";
                 }
                 else {
                     alert("导出失败！" + result.msg);

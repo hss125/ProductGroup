@@ -54,23 +54,23 @@ namespace ProductGroup.Controllers
             r.msg = "";
             return JsonConvert.SerializeObject(r);
         }
-        public string exportOneExcel()
-        {
-            DateTime dtToday = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));//今天
-            DateTime dtNexDay = Convert.ToDateTime(DateTime.Now.AddDays(2).ToString("yyyy-MM-dd"));//明天
-            var proarr = pg.Products.Where(w=>w.CreateDate > dtToday && w.CreateDate < dtNexDay).ToList();
-            try
-            {
-                foreach (var pro in proarr)
-                {
-                    new ExportExcel().exportOneExcel(Server.MapPath("/"), pro);
-                }
-            }
-            catch (Exception ex)
-            {
-                return JsonConvert.SerializeObject(new { code = -1, msg = ex.Message });
-            }
-            return JsonConvert.SerializeObject(new { code=0, msg =""});
-        }
+        //public string exportOneExcel()
+        //{
+        //    DateTime dtToday = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));//今天
+        //    DateTime dtNexDay = Convert.ToDateTime(DateTime.Now.AddDays(2).ToString("yyyy-MM-dd"));//明天
+        //    var proarr = pg.Products.Where(w=>w.CreateDate > dtToday && w.CreateDate < dtNexDay).ToList();
+        //    try
+        //    {
+        //        foreach (var pro in proarr)
+        //        {
+        //            new ExportExcel().exportOneExcel(Server.MapPath("/"), pro);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return JsonConvert.SerializeObject(new { code = -1, msg = ex.Message });
+        //    }
+        //    return JsonConvert.SerializeObject(new { code=0, msg =""});
+        //}
     }
 }

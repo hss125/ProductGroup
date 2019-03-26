@@ -27,6 +27,7 @@ namespace WebApplication1.Controllers
             r.data = new img { src = "/Product/" + filename };
             return JsonConvert.SerializeObject(r);
         }
+        public ProductGroupEntities pg = new ProductGroupEntities();
         public string SaveGroup(int groupcount)
         {
             new GRandom().Group(groupcount);
@@ -35,6 +36,38 @@ namespace WebApplication1.Controllers
             r.code = "0";
             r.msg = "";
             return JsonConvert.SerializeObject(r);
+        }
+        public string SaveOneGroup()
+        {
+            DateTime dtToday = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));//今天
+            DateTime dtNexDay = Convert.ToDateTime(DateTime.Now.AddDays(2).ToString("yyyy-MM-dd"));//明天
+            pg.Groups.RemoveRange(pg.Groups.Where(w => w.Date > dtToday && w.Date < dtNexDay));
+
+            var toady = DateTime.Now.AddDays(1);
+            var proList = pg.Products.Where(w => w.CreateDate.Value.Month == toady.Month && w.CreateDate.Value.Day == toady.Day).ToList();
+            var count = 0;            
+            try
+            {
+                foreach (var pro in proList)
+                {
+                    string name = "";
+                    count++;
+                    name += "" + DateTime.Now.AddDays(1).ToString("MMdd") + "Q";
+                    var l = 4 - count.ToString().Length;
+                    for (var p = 0; p < l; p++)
+                    {
+                        name += "0";
+                    }
+                    name += count;
+                    pg.Groups.Add(new Group { TaskID = name, ProId = pro.Id.ToString(), Date = DateTime.Now.AddDays(1) });
+                }
+                pg.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { code = -1, msg = ex.Message });
+            }
+            return JsonConvert.SerializeObject(new { code = 0, msg = "" });
         }
         public string exportExcel()
         {
@@ -76,7 +109,6 @@ namespace WebApplication1.Controllers
             r.msg = "";
             return JsonConvert.SerializeObject(r);
         }
-        public ProductGroupEntities pg = new ProductGroupEntities();
         public List<GroupItem> GetGroupData()
         {
             DateTime dtToday = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));//今天

@@ -9,9 +9,9 @@
             <tr>
                 <th><div class="txt-warp"><b>任务编号</b></div></th>
                 <th><div class="txt-warp"><b>店铺1</b></div></th>
-                <th><div class="txt-warp"><b>店铺2</b></div></th>
+                @*<th><div class="txt-warp"><b>店铺2</b></div></th>
                 <th><div class="txt-warp"><b>店铺3</b></div></th>
-                <th><div class="txt-warp"><b>店铺4</b></div></th>
+                <th><div class="txt-warp"><b>店铺4</b></div></th>*@
                 <th><div class="txt-warp"><b>总金额</b></div></th>
                 <th><div class="txt-warp"><b>淘宝账号</b>&nbsp;<a class="layui-btn layui-btn-xs" onclick="HandOut(0)" lay-event="edit">全部保存</a></div></th>
             </tr>
@@ -22,8 +22,28 @@
                 <tr>
                     <td>@item.group.TaskID </td>
                     <td>[@item.proList[0].Shop] @item.proList[0].ShopName</td>
-                    <td>[@item.proList[1].Shop] @item.proList[1].ShopName</td>
-                    <td>[@item.proList[2].Shop] @item.proList[2].ShopName</td>
+                    @*<td>
+                        @{
+                            if (item.proList.Count > 1)
+                            {
+                                <span>
+                                    [@item.proList[1].Shop] @item.proList[1].ShopName
+                                </span>
+
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.proList.Count > 2)
+                            {
+                                <span>
+                                    [@item.proList[2].Shop] @item.proList[2].ShopName
+                                </span>
+
+                            }
+                        }
+                    </td>
                     <td>
                         @{
                             if (item.proList.Count > 3)
@@ -35,7 +55,7 @@
                                 }
                             }
 
-                    </td>
+                    </td>*@
                     <td>
                         @{
                             decimal pri = 0;
